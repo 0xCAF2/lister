@@ -10,6 +10,7 @@ class Lister extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final copied = useState(false);
+    final listWidth = useState(400.0);
     final textController =
         useTextEditingController(text: ref.watch(textDataProvider));
     useEffect(() {
@@ -26,12 +27,12 @@ class Lister extends HookConsumerWidget {
     return Scaffold(
       body: Padding(
         padding:
-            const EdgeInsets.only(left: 20, right: 80, top: 20, bottom: 20),
+            const EdgeInsets.only(left: 24, right: 80, top: 24, bottom: 24),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(16),
               child: IconButton(
                 onPressed: () async {
                   await Clipboard.setData(
@@ -56,7 +57,23 @@ class Lister extends HookConsumerWidget {
                 maxLines: null,
               ),
             ),
-            const SizedBox(width: 400, child: ItemListView()),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onHorizontalDragUpdate: (details) {
+                    final newWidth =
+                        listWidth.value - (details.primaryDelta ?? 0);
+                    final maxWidth = MediaQuery.of(context).size.width - 240;
+                    if (newWidth > 0 && newWidth < maxWidth) {
+                      listWidth.value = newWidth;
+                    }
+                  },
+                  child: const Icon(Icons.drag_indicator),
+                )
+              ],
+            ),
+            SizedBox(width: listWidth.value, child: const ItemListView()),
           ],
         ),
       ),
