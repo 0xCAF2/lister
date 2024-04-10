@@ -1,5 +1,5 @@
 import 'package:lister/item.dart';
-import 'package:lister/text_data.dart';
+import 'package:lister/text_source.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'items.g.dart';
@@ -10,7 +10,7 @@ class Items extends _$Items {
 
   @override
   List<Item> build() {
-    final text = ref.watch(textDataProvider);
+    final text = ref.watch(textSourceProvider);
     return parse(text);
   }
 
@@ -32,6 +32,6 @@ class Items extends _$Items {
     items.insert(newIndex, item);
 
     final newText = items.map((e) => e.text).join('\n');
-    ref.read(textDataProvider.notifier).update(newText);
+    ref.read(textSourceProvider.notifier).update(newText);
   }
 }

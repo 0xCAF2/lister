@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'items.dart';
+part of 'text_source.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemsHash() => r'640799fda5e73b513a717f7a41a50d985834146d';
+String _$textSourceHash() => r'88b835fca4563a18372fca814aa38a5d1865b5fd';
 
-/// See also [Items].
-@ProviderFor(Items)
-final itemsProvider = AutoDisposeNotifierProvider<Items, List<Item>>.internal(
-  Items.new,
-  name: r'itemsProvider',
+/// See also [TextSource].
+@ProviderFor(TextSource)
+final textSourceProvider =
+    AutoDisposeNotifierProvider<TextSource, String>.internal(
+  TextSource.new,
+  name: r'textSourceProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$itemsHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$textSourceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Items = AutoDisposeNotifier<List<Item>>;
+typedef _$TextSource = AutoDisposeNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

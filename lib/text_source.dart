@@ -1,9 +1,9 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'text_data.g.dart';
+part 'text_source.g.dart';
 
 @riverpod
-class TextData extends _$TextData {
+class TextSource extends _$TextSource {
   @override
   String build() {
     return '';
