@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lister/item_list_view.dart';
-import 'package:lister/text_data.dart';
+import 'package:lister/text_source.dart';
 
 class Lister extends HookConsumerWidget {
   const Lister({super.key});
@@ -12,14 +12,14 @@ class Lister extends HookConsumerWidget {
     final copied = useState(false);
     final listWidth = useState(400.0);
     final textController =
-        useTextEditingController(text: ref.watch(textDataProvider));
+        useTextEditingController(text: ref.watch(textSourceProvider));
     useEffect(() {
       textController.addListener(() {
-        ref.read(textDataProvider.notifier).update(textController.text);
+        ref.read(textSourceProvider.notifier).update(textController.text);
       });
       return null;
     }, const []);
-    ref.listen(textDataProvider, (previous, next) {
+    ref.listen(textSourceProvider, (previous, next) {
       textController.value = textController.value
           .replaced(TextRange(start: 0, end: textController.text.length), next);
     });
