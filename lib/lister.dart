@@ -14,9 +14,11 @@ class Lister extends HookConsumerWidget {
     final listWidth = useState(400.0);
     final textController = useTextEditingController();
     ref.listen(textSourceProvider, (previous, next) {
-      // .value must be used to notify the change.
-      textController.value = textController.value
-          .replaced(TextRange(start: 0, end: textController.text.length), next);
+      // .value property must be used to notify the change.
+      textController.value = textController.value.replaced(
+        TextRange(start: 0, end: textController.text.length),
+        next,
+      );
     });
 
     final savedText = ref.watch(textStoreProvider);
@@ -33,12 +35,15 @@ class Lister extends HookConsumerWidget {
       return null;
     }, const []);
 
-    // Saving the text is called by the debounced value.
+    // The debounced text should be saved to the store.
     useEffect(() {
       if (debouncedTextValue == null) return null;
       ref.read(textStoreProvider.notifier).save(debouncedTextValue);
       return null;
     }, [debouncedTextValue]);
+
+    final isHidingTextField = useState(false);
+    final isHidingList = useState(false);
 
     return Scaffold(
       body: Padding(
@@ -47,11 +52,13 @@ class Lister extends HookConsumerWidget {
         child: savedText.when(
           data: (text) {
             useEffect(() {
-              // Updating by the saved text at first must be called
-              // when the build() is done.
+              // The text should be updated initially by the saved text
+              // only once the build() is complete.
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 textController.value = textController.value.replaced(
-                    TextRange(start: 0, end: textController.text.length), text);
+                  TextRange(start: 0, end: textController.text.length),
+                  text,
+                );
               });
               return null;
             }, const []);
@@ -73,35 +80,79 @@ class Lister extends HookConsumerWidget {
                         : const Icon(Icons.copy),
                   ),
                 ),
-                Expanded(
-                  child: TextField(
-                    controller: textController,
-                    decoration: const InputDecoration(
-                      hintText:
-                          'Enter text. eg.\nItem 1 \\n\nItem 2 \\n\n  Item 2-1',
-                    ),
-                    expands: true,
-                    maxLines: null,
-                  ),
-                ),
+                isHidingTextField.value
+                    ? const SizedBox(width: 0)
+                    : Expanded(
+                        child: TextField(
+                          controller: textController,
+                          decoration: const InputDecoration(
+                            hintText: '''
+Enter text. eg.\nItem 1 \\n\nItem 2 \\n\n  Item 2-1''',
+                          ),
+                          expands: true,
+                          maxLines: null,
+                        ),
+                      ),
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onHorizontalDragUpdate: (details) {
-                        final newWidth =
-                            listWidth.value - (details.primaryDelta ?? 0);
-                        final maxWidth =
-                            MediaQuery.of(context).size.width - 240;
-                        if (newWidth > 0 && newWidth < maxWidth) {
-                          listWidth.value = newWidth;
-                        }
-                      },
-                      child: const Icon(Icons.drag_indicator),
-                    )
+                    IconButton(
+                      onPressed: isHidingTextField.value
+                          ? null
+                          : () {
+                              if (isHidingList.value) {
+                                isHidingList.value = false;
+                              } else {
+                                isHidingTextField.value = true;
+                              }
+                            },
+                      icon: const Icon(Icons.keyboard_double_arrow_left),
+                    ),
+                    const SizedBox(height: 32),
+                    IconButton(
+                      onPressed: isHidingList.value
+                          ? null
+                          : () {
+                              if (isHidingTextField.value) {
+                                isHidingTextField.value = false;
+                              } else {
+                                isHidingList.value = true;
+                              }
+                            },
+                      icon: const Icon(Icons.keyboard_double_arrow_right),
+                    ),
+                    isHidingList.value || isHidingTextField.value
+                        ? const SizedBox()
+                        : Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onHorizontalDragUpdate: (details) {
+                                    final newWidth = listWidth.value -
+                                        (details.primaryDelta ?? 0);
+                                    final maxWidth =
+                                        MediaQuery.of(context).size.width - 360;
+                                    if (newWidth > 160 && newWidth < maxWidth) {
+                                      listWidth.value = newWidth;
+                                    }
+                                  },
+                                  child: const Icon(Icons.drag_indicator),
+                                )
+                              ],
+                            ),
+                          ),
                   ],
                 ),
-                SizedBox(width: listWidth.value, child: const ItemListView()),
+                if (isHidingList.value)
+                  const SizedBox(width: 0)
+                else if (isHidingTextField.value)
+                  const Expanded(child: ItemListView())
+                else
+                  SizedBox(
+                    width: listWidth.value,
+                    child: const ItemListView(),
+                  ),
               ],
             );
           },
