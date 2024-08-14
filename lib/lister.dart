@@ -45,119 +45,112 @@ class Lister extends HookConsumerWidget {
     final isHidingTextField = useState(false);
     final isHidingList = useState(false);
 
+    useEffect(() {
+      // The text should be updated initially by the saved text
+      // only once the build() is complete.
+      textController.value = textController.value.replaced(
+        TextRange(start: 0, end: textController.text.length),
+        savedText,
+      );
+      return null;
+    }, const []);
+
     return Scaffold(
       body: Padding(
         padding:
             const EdgeInsets.only(left: 24, right: 80, top: 24, bottom: 24),
-        child: savedText.when(
-          data: (text) {
-            useEffect(() {
-              // The text should be updated initially by the saved text
-              // only once the build() is complete.
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                textController.value = textController.value.replaced(
-                  TextRange(start: 0, end: textController.text.length),
-                  text,
-                );
-              });
-              return null;
-            }, const []);
-            return Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: IconButton(
-                    onPressed: () async {
-                      await Clipboard.setData(
-                          ClipboardData(text: textController.text));
-                      copied.value = true;
-                      await Future.delayed(const Duration(seconds: 3));
-                      copied.value = false;
-                    },
-                    icon: copied.value
-                        ? const Icon(Icons.check)
-                        : const Icon(Icons.copy),
-                  ),
-                ),
-                isHidingTextField.value
-                    ? const SizedBox(width: 0)
-                    : Expanded(
-                        child: TextField(
-                          controller: textController,
-                          decoration: const InputDecoration(
-                            hintText: '''
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: IconButton(
+                onPressed: () async {
+                  await Clipboard.setData(
+                      ClipboardData(text: textController.text));
+                  copied.value = true;
+                  await Future.delayed(const Duration(seconds: 3));
+                  copied.value = false;
+                },
+                icon: copied.value
+                    ? const Icon(Icons.check)
+                    : const Icon(Icons.copy),
+              ),
+            ),
+            isHidingTextField.value
+                ? const SizedBox(width: 0)
+                : Expanded(
+                    child: TextField(
+                      controller: textController,
+                      decoration: const InputDecoration(
+                        hintText: '''
 Enter text. eg.\nItem 1 \\n\nItem 2 \\n\n  Item 2-1''',
-                          ),
-                          expands: true,
-                          maxLines: null,
+                      ),
+                      expands: true,
+                      maxLines: null,
+                    ),
+                  ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                IconButton(
+                  onPressed: isHidingTextField.value
+                      ? null
+                      : () {
+                          if (isHidingList.value) {
+                            isHidingList.value = false;
+                          } else {
+                            isHidingTextField.value = true;
+                          }
+                        },
+                  icon: const Icon(Icons.keyboard_double_arrow_left),
+                ),
+                const SizedBox(height: 32),
+                IconButton(
+                  onPressed: isHidingList.value
+                      ? null
+                      : () {
+                          if (isHidingTextField.value) {
+                            isHidingTextField.value = false;
+                          } else {
+                            isHidingList.value = true;
+                          }
+                        },
+                  icon: const Icon(Icons.keyboard_double_arrow_right),
+                ),
+                isHidingList.value || isHidingTextField.value
+                    ? const SizedBox()
+                    : Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            GestureDetector(
+                              onHorizontalDragUpdate: (details) {
+                                final newWidth = listWidth.value -
+                                    (details.primaryDelta ?? 0);
+                                final maxWidth =
+                                    MediaQuery.of(context).size.width - 360;
+                                if (newWidth > 160 && newWidth < maxWidth) {
+                                  listWidth.value = newWidth;
+                                }
+                              },
+                              child: const Icon(Icons.drag_indicator),
+                            )
+                          ],
                         ),
                       ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      onPressed: isHidingTextField.value
-                          ? null
-                          : () {
-                              if (isHidingList.value) {
-                                isHidingList.value = false;
-                              } else {
-                                isHidingTextField.value = true;
-                              }
-                            },
-                      icon: const Icon(Icons.keyboard_double_arrow_left),
-                    ),
-                    const SizedBox(height: 32),
-                    IconButton(
-                      onPressed: isHidingList.value
-                          ? null
-                          : () {
-                              if (isHidingTextField.value) {
-                                isHidingTextField.value = false;
-                              } else {
-                                isHidingList.value = true;
-                              }
-                            },
-                      icon: const Icon(Icons.keyboard_double_arrow_right),
-                    ),
-                    isHidingList.value || isHidingTextField.value
-                        ? const SizedBox()
-                        : Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                GestureDetector(
-                                  onHorizontalDragUpdate: (details) {
-                                    final newWidth = listWidth.value -
-                                        (details.primaryDelta ?? 0);
-                                    final maxWidth =
-                                        MediaQuery.of(context).size.width - 360;
-                                    if (newWidth > 160 && newWidth < maxWidth) {
-                                      listWidth.value = newWidth;
-                                    }
-                                  },
-                                  child: const Icon(Icons.drag_indicator),
-                                )
-                              ],
-                            ),
-                          ),
-                  ],
-                ),
-                if (isHidingList.value)
-                  const SizedBox(width: 0)
-                else if (isHidingTextField.value)
-                  const Expanded(child: ItemListView())
-                else
-                  SizedBox(
-                    width: listWidth.value,
-                    child: const ItemListView(),
-                  ),
               ],
-            );
-          },
-          error: (error, stackTrace) => Text(error.toString()),
-          loading: () => const Center(child: CircularProgressIndicator()),
+            ),
+            if (isHidingList.value)
+              const SizedBox(width: 0)
+            else if (isHidingTextField.value)
+              const Expanded(child: ItemListView())
+            else
+              SizedBox(
+                width: listWidth.value,
+                child: const ItemListView(),
+              ),
+          ],
         ),
       ),
     );

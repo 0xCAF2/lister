@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'text_store.dart';
+part of 'prefs.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$textStoreHash() => r'73db34e4c5285e7b053e088bb7aa1c90c30dd924';
+String _$prefsHash() => r'6c8c4baa4fcfd479e3d89292f4351d440c2810a0';
 
-/// See also [TextStore].
-@ProviderFor(TextStore)
-final textStoreProvider =
-    AutoDisposeNotifierProvider<TextStore, String>.internal(
-  TextStore.new,
-  name: r'textStoreProvider',
+/// See also [prefs].
+@ProviderFor(prefs)
+final prefsProvider = AutoDisposeProvider<SharedPreferencesWithCache>.internal(
+  prefs,
+  name: r'prefsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$textStoreHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$prefsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$TextStore = AutoDisposeNotifier<String>;
+typedef PrefsRef = AutoDisposeProviderRef<SharedPreferencesWithCache>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
