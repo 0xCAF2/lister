@@ -27,13 +27,12 @@ class Items extends _$Items {
       final lastIndex = _findSentinel(oldIndex + 1, newIndex, 1);
       _renumberItem(oldIndex + 1, lastIndex, -1);
       _renumberItem(oldIndex, oldIndex + 1, newIndex - oldIndex - 1);
-      reorder(oldIndex, newIndex);
     } else {
       final firstIndex = _findSentinel(oldIndex - 1, newIndex, -1);
       _renumberItem(firstIndex, oldIndex, 1);
       _renumberItem(oldIndex, oldIndex + 1, newIndex - oldIndex);
-      reorder(oldIndex, newIndex);
     }
+    reorder(oldIndex, newIndex);
   }
 
   int _findSentinel(int startIndex, int endIndex, int delta) {
