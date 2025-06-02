@@ -1,22 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lister/lister.dart';
-import 'package:lister/prefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:lister/prefs_initializer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferencesWithCache.create(
-    cacheOptions: const SharedPreferencesWithCacheOptions(),
-  );
-  runApp(
-    ProviderScope(
-      overrides: [
-        prefsProvider.overrideWithValue(prefs),
-      ],
-      child: const MyApp(),
-    ),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,7 +22,7 @@ class MyApp extends StatelessWidget {
         ),
         brightness: Brightness.dark,
       ),
-      home: const Lister(),
+      home: const PrefsInitializer(child: Lister()),
     );
   }
 }

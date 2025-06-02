@@ -7,6 +7,7 @@ class ItemListView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final items = ref.watch(itemsProvider);
+
     return ReorderableListView(
       onReorder: (oldIndex, newIndex) {
         final item = items[oldIndex];

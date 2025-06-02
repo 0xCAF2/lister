@@ -6,7 +6,7 @@ part of 'items.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemsHash() => r'640799fda5e73b513a717f7a41a50d985834146d';
+String _$itemsHash() => r'03792485dfaf5885fd9296518c95b95107a22702';
 
 /// See also [Items].
 @ProviderFor(Items)
@@ -21,4 +21,4 @@ final itemsProvider = AutoDisposeNotifierProvider<Items, List<Item>>.internal(
 
 typedef _$Items = AutoDisposeNotifier<List<Item>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

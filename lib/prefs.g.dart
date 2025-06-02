@@ -6,11 +6,12 @@ part of 'prefs.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$prefsHash() => r'6c8c4baa4fcfd479e3d89292f4351d440c2810a0';
+String _$prefsHash() => r'9e0a6f2545842a84e037af768bb403992c65b14b';
 
 /// See also [prefs].
 @ProviderFor(prefs)
-final prefsProvider = AutoDisposeProvider<SharedPreferencesWithCache>.internal(
+final prefsProvider =
+    AutoDisposeFutureProvider<SharedPreferencesWithCache>.internal(
   prefs,
   name: r'prefsProvider',
   debugGetCreateSourceHash:
@@ -19,6 +20,8 @@ final prefsProvider = AutoDisposeProvider<SharedPreferencesWithCache>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef PrefsRef = AutoDisposeProviderRef<SharedPreferencesWithCache>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef PrefsRef = AutoDisposeFutureProviderRef<SharedPreferencesWithCache>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
