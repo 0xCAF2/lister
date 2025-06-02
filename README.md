@@ -1,3 +1,3 @@
 # Lister
 
-A simple reorderable list in Flutter.
+A simple list editor by Flutter.
