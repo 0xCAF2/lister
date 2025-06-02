@@ -9,7 +9,12 @@ class ItemListView extends HookConsumerWidget {
     final items = ref.watch(itemsProvider);
     return ReorderableListView(
       onReorder: (oldIndex, newIndex) {
-        ref.read(itemsProvider.notifier).reorder(oldIndex, newIndex);
+        final item = items[oldIndex];
+        if (item.isNumbered) {
+          ref.read(itemsProvider.notifier).renumber(oldIndex, newIndex);
+        } else {
+          ref.read(itemsProvider.notifier).reorder(oldIndex, newIndex);
+        }
       },
       children: [
         for (final item in items)

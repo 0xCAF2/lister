@@ -48,10 +48,12 @@ class Lister extends HookConsumerWidget {
     useEffect(() {
       // The text should be updated initially by the saved text
       // only once the build() is complete.
-      textController.value = textController.value.replaced(
-        TextRange(start: 0, end: textController.text.length),
-        savedText,
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        textController.value = textController.value.replaced(
+          TextRange(start: 0, end: textController.text.length),
+          savedText,
+        );
+      });
       return null;
     }, const []);
 
