@@ -6,20 +6,50 @@ part of 'text_store.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$textStoreHash() => r'73db34e4c5285e7b053e088bb7aa1c90c30dd924';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [TextStore].
 @ProviderFor(TextStore)
-final textStoreProvider =
-    AutoDisposeNotifierProvider<TextStore, String>.internal(
-  TextStore.new,
-  name: r'textStoreProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$textStoreHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+final textStoreProvider = TextStoreProvider._();
 
-typedef _$TextStore = AutoDisposeNotifier<String>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class TextStoreProvider extends $NotifierProvider<TextStore, String> {
+  TextStoreProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'textStoreProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$textStoreHash();
+
+  @$internal
+  @override
+  TextStore create() => TextStore();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(String value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<String>(value),
+    );
+  }
+}
+
+String _$textStoreHash() => r'286c1a55f91153c084724588a1af80299f685efc';
+
+abstract class _$TextStore extends $Notifier<String> {
+  String build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<String, String>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<String, String>, String, Object?, Object?>;
+    element.handleCreate(ref, build);
+  }
+}

@@ -10,7 +10,7 @@ class Item {
   int get indent => text.length - text.trimLeft().length;
 
   bool get isNumbered {
-    return text.startsWith(RegExp(r'^\d+\. '));
+    return text.startsWith(RegExp(r'^\d+\. ')) && !text.startsWith('0. ');
   }
 
   Item copyWith({String? text, int? id}) {

@@ -6,19 +6,50 @@ part of 'items.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(Items)
+final itemsProvider = ItemsProvider._();
+
+final class ItemsProvider extends $NotifierProvider<Items, List<Item>> {
+  ItemsProvider._()
+      : super(
+          from: null,
+          argument: null,
+          retry: null,
+          name: r'itemsProvider',
+          isAutoDispose: true,
+          dependencies: null,
+          $allTransitiveDependencies: null,
+        );
+
+  @override
+  String debugGetCreateSourceHash() => _$itemsHash();
+
+  @$internal
+  @override
+  Items create() => Items();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<Item> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Item>>(value),
+    );
+  }
+}
+
 String _$itemsHash() => r'03792485dfaf5885fd9296518c95b95107a22702';
 
-/// See also [Items].
-@ProviderFor(Items)
-final itemsProvider = AutoDisposeNotifierProvider<Items, List<Item>>.internal(
-  Items.new,
-  name: r'itemsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$itemsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Items = AutoDisposeNotifier<List<Item>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$Items extends $Notifier<List<Item>> {
+  List<Item> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final ref = this.ref as $Ref<List<Item>, List<Item>>;
+    final element = ref.element as $ClassProviderElement<
+        AnyNotifier<List<Item>, List<Item>>, List<Item>, Object?, Object?>;
+    element.handleCreate(ref, build);
+  }
+}
